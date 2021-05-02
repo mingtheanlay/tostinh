@@ -13,7 +13,7 @@
     <link href="css/bootstrap.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/shop-homepage.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="img/nav-brand-tran.png" />
 </head>
 
