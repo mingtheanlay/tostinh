@@ -10,15 +10,15 @@
 
     <title>Tos Tinh</title>
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/shop-homepage.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
-
+    <link rel="shortcut icon" type="image/png" href="img/nav-brand-tran.png" />
 </head>
 
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <?php include(TEMPLATE_FRONT . DS . "top-nav.php") ?>
+        <?php include(FRONTEND_TEMPLATE . DS . "top-nav.php") ?>
     </nav>

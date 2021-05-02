@@ -1,5 +1,5 @@
 <?php require_once("../resources/config.php"); ?>
-<?php include(TEMPLATE_FRONT . DS . "header.php") ?>
+<?php include(FRONTEND_TEMPLATE . DS . "header.php") ?>
 <!-- Page Content -->
 <div class="container">
     <!-- Jumbotron Header -->
@@ -26,4 +26,4 @@
 </div>
 
 <!-- Footer here -->
-<?php include(TEMPLATE_FRONT . DS . "footer.php") ?>
+<?php include(FRONTEND_TEMPLATE . DS . "footer.php") ?>

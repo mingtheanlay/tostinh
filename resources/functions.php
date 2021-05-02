@@ -25,6 +25,23 @@ function escape_string($str)
     return mysqli_real_escape_string($conn, $str);
 }
 
+function send_message($msg)
+{
+    if (!empty($msg)) {
+        $_SESSION['message'] = $msg;
+    } else {
+        $msg = "";
+    }
+}
+
+function show_message()
+{
+    if (isset($_SESSION['message'])) {
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+    }
+}
+
 function redirect($location)
 {
     header("Location: $location");
@@ -49,7 +66,7 @@ function get_products()
                 <h4><a target="_blank" href="item.php?id={$row['product_id']}">{$row['product_title']}</a></h4>
                 <p>{$row['product_short_description']}</p>
                 <a class="btn btn-primary" target="_blank"
-                    href="checkout.php?id={$row['product_id']}">Add to cart
+                    href="cart.php?add={$row['product_id']}">Add to cart
                 </a>
             </div>
         </div>
@@ -181,6 +198,42 @@ function get_product_in_shop_page()
         </div>
         DELIMETER;
         echo $block;
+    }
+}
+// Login user
+function user_login()
+{
+    if (isset($_POST["submit"])) {
+        $username = escape_string($_POST["username"]);
+        $password = escape_string($_POST["password"]);
+        $query = run_query("SELECT * FROM users WHERE username = '{$username}' AND password = '{$password}'");
+        confirm_query($query);
+        if (mysqli_num_rows($query) == 0) {
+            send_message("Incorrect Username or Password");
+            redirect("login.php");
+        } else {
+            redirect("admin");
+        }
+    }
+}
+// Get total price in session 
+function get_total_price()
+{
+    if (isset($_SESSION['price_total'])) {
+        echo "&#36;" . $_SESSION['price_total'];
+    } else {
+        $_SESSION['price_total'] = "";
+        echo $_SESSION['price_total'] = "&#36;" . "0";
+    }
+}
+// Get total price in session 
+function get_total_quantity()
+{
+    if (isset($_SESSION['total_quantity'])) {
+        echo $_SESSION['total_quantity'];
+    } else {
+        $_SESSION['total_quantity'] = "";
+        echo $_SESSION['total_quantity'] = "0";
     }
 }
 
