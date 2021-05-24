@@ -47,6 +47,11 @@ function redirect($location)
     header("Location: $location");
 }
 
+function get_admin_username()
+{
+    return $_SESSION['username'];
+}
+
 // For Front-End
 // Get product
 function get_products()
@@ -66,7 +71,7 @@ function get_products()
                 <h4><a target="_blank" href="item.php?id={$row['product_id']}">{$row['product_title']}</a></h4>
                 <p>{$row['product_short_description']}</p>
                 <a class="btn btn-primary" target="_blank"
-                    href="cart.php?add={$row['product_id']}">Add to cart
+                    href="../resources/cart.php?add={$row['product_id']}">Add to cart
                 </a>
             </div>
         </div>
@@ -110,7 +115,7 @@ function show_individuel_product($id)
                         <p>{$row['product_short_description']}</p>
                         <form action="">
                             <div class="form-group">
-                                <input type="submit" class="btn btn-primary" value="Add to Cart">
+                                <a href="../resources/cart.php?add={$row['product_id']}" class="btn btn-primary">Buy Now</a>
                             </div>
                         </form>
                     </div>
@@ -160,9 +165,9 @@ function get_product_in_cat_page($id)
                 <h4><a target="_blank" href="item.php?id={$row['product_id']}">{$row['product_title']}</a></h4>
                 <p>{$row['product_short_description']}</p>
                 <a class="btn btn-primary" target="_blank"
-                    href="checkout.php?id={$row['product_id']}">Buy Now
+                    href="../resources/cart.php?add={$row['product_id']}">Buy Now
                 </a>
-                <a  href="item.php?id={$row['product_id']}" class="btn btn-default">MoreInfo</a>
+                <a  href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
             </div>
         </div>
         </div>
@@ -190,9 +195,9 @@ function get_product_in_shop_page()
                 <h4><a target="_blank" href="item.php?id={$row['product_id']}">{$row['product_title']}</a></h4>
                 <p>{$row['product_short_description']}</p>
                 <a class="btn btn-primary" target="_blank"
-                    href="checkout.php?id={$row['product_id']}">Buy Now
+                    href="../resources/cart.php?add={$row['product_id']}">Buy Now
                 </a>
-                <a  href="item.php?id={$row['product_id']}" class="btn btn-default">MoreInfo</a>
+                <a  href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
             </div>
         </div>
         </div>
@@ -208,11 +213,20 @@ function user_login()
         $password = escape_string($_POST["password"]);
         $query = run_query("SELECT * FROM users WHERE username = '{$username}' AND password = '{$password}'");
         confirm_query($query);
+
         if (mysqli_num_rows($query) == 0) {
             send_message("Incorrect Username or Password");
             redirect("login.php");
         } else {
-            redirect("admin");
+            if (isset($_POST["remember"])) {
+                setcookie("login", $username, time() + (10 * 364 * 24 * 60 * 60),  "/");
+                $_SESSION['username'] = $username;
+                redirect("admin");
+            } else {
+                setcookie("login", $username, time() + (3600 * 1),  "/");
+                $_SESSION['username'] = $username;
+                redirect("admin");
+            }
         }
     }
 }

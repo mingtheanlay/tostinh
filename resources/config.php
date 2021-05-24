@@ -13,4 +13,4 @@ defined("DB_PASS") ? null : DEFINE("DB_PASS", "root");
 defined("DB_NAME") ? null : DEFINE("DB_NAME", "ecom_db");
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 require_once("functions.php");
-require_once("../public/cart.php");
+require_once("cart.php");

@@ -1,4 +1,6 @@
-<?php require_once("../resources/config.php"); ?>
+<?php
+require_once("../resources/config.php");
+?>
 <?php include(FRONTEND_TEMPLATE . DS . "header.php") ?>
 <!-- Page Content -->
 <div class="container">
@@ -6,7 +8,7 @@
     <div class="row">
         <h1>Checkout</h1>
         <h4 class="text-danger"><?php show_message(); ?></h4>
-        <form action="">
+        <form action="" method="post">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -21,6 +23,7 @@
                     <?php cart(); ?>
                 </tbody>
             </table>
+            <div id="paypal-button"></div>
         </form>
         <!--  ***********CART TOTALS*************-->
         <div class="col-xs-4 pull-right ">
@@ -37,6 +40,8 @@
                 <tr class="order-total">
                     <th>Order Total</th>
                     <td><strong><span class="amount"><?php get_total_price(); ?></span></strong> </td>
+                    <input id="amount" type="hidden" name="total-price"
+                        value="<?php echo ($_SESSION['price_total']) ?>">
                 </tr>
                 </tbody>
             </table>
@@ -45,3 +50,5 @@
 </div>
 <!-- Footer -->
 <?php include(FRONTEND_TEMPLATE . DS . "footer.php") ?>
+<script src=" https://www.paypalobjects.com/api/checkout.js"></script>
+<script src="./js/paypal.js"></script>

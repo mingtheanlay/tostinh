@@ -3,7 +3,7 @@
 <!-- Page Content -->
 <div class="container">
     <header>
-        <h1>Shop </h1>
+        <h1>Shop</h1>
     </header>
     <hr>
     <!-- Page Features -->

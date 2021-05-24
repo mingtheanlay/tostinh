@@ -17,17 +17,17 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="shop.php">Shop</a>
+                <li class="nav-item">
+                    <a href="shop.php" class="nav-link">Shop</a>
                 </li>
-                <li>
-                    <a href="login.php">Login</a>
+                <li class="nav-item">
+                    <a href="checkout.php" class="nav-link">Checkout</a>
                 </li>
-                <li>
-                    <a href="admin">Admin</a>
-                </li>
-                <li>
-                    <a href="checkout.php">Checkout</a>
+
+            </ul>
+            <ul class="nav navbar-nav pull-right">
+                <li class="nav-item pull-right">
+                    <a href="admin" class="nav-link">Admin</a>
                 </li>
             </ul>
         </div>

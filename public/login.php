@@ -3,29 +3,25 @@
 
 <!-- Page Content -->
 <div class="container">
-    <header>
-        <h1 class="text-center">Login</h1>
-        <h5 class="text-center text-danger"><?php show_message(); ?></h5>
-        <div class="col-sm-4 col-sm-offset-5">
-            <form class="" action="" method="post" enctype="multipart/form-data">
-                <div class="form-group"><label for="">
-                        Username<input type="text" name="username" class="form-control" placeholder="Username"></label>
-                </div>
-                <div class="form-group"><label for="password">
-                        Password<input type="password" name="password" class="form-control"
-                            placeholder="Password"></label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Remeber Me</label>
-                </div>
-                <div class="form-group">
-                    <input type="submit" name="submit" class="btn btn-primary">
-                </div>
-            </form>
-        </div>
-        <?php user_login() ?>
-    </header>
+    <div class="login-form">
+        <form method="post">
+            <?php user_login() ?>
+            <h2 class="text-center">Log in</h2>
+            <h6 class="text-center text-danger"><?php show_message(); ?></h6>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Username" required="required" name="username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="required" name="password">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" name="submit">Log in</button>
+            </div>
+            <div class="clearfix">
+                <label class="float-left form-check-label"><input type="checkbox" name="remember"> Remember me</label>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- Footer -->

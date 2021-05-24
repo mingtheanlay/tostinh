@@ -1,4 +1,6 @@
-<?php require_once("../resources/config.php"); ?>
+<?php
+require_once("../resources/config.php");
+?>
 <?php include(FRONTEND_TEMPLATE . DS . "header.php") ?>
 <!-- Page Content -->
 <div class="container">
