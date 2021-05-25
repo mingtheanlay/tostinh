@@ -33,11 +33,11 @@ paypal
           "http://localhost:8888/tostinh/public/thankyou.php" +
           "?amt=" +
           amt +
-          "?cc=" +
+          "&cc=" +
           cc +
-          "?tx=" +
+          "&tx=" +
           tx +
-          "?st=" +
+          "&st=" +
           st;
         window.location.replace(url);
       });

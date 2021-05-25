@@ -37,10 +37,6 @@ function cart()
 {
     $total = 0;
     $qty = 0;
-    $item_name = 0;
-    $item_number = 1;
-    $amount = 1;
-    $item_qty = 1;
     foreach ($_SESSION as $name => $value) {
         if ($value > 0) {
             if (substr($name, 0, 8) == "product_") {
@@ -67,26 +63,50 @@ function cart()
                             &nbsp;&nbsp;&nbsp;
                         </td>
                     </tr>
-                    <input type="hidden" name="item_name_{$item_name}" value="{$row['product_title']}">
-                    <input type="hidden" name="item_number_{$item_number}" value="{$row['product_id']}">
-                    <input type="hidden" name="amount_{$amount}" value="{$row['product_price']}">
-                    <input type="hidden" name="quantity_{$item_qty}" value="{$value}">
                     DELIMETER;
-
                     echo $product;
-
-                    $item_name++;
-                    $item_number++;
-                    $amount++;
-                    $item_qty++;
-
-                    $_SESSION['price_total'] = $total;
-                    $_SESSION['total_quantity'] = $qty;
                 }
+
+                $_SESSION['price_total'] = $total;
+                $_SESSION['total_quantity'] = $qty;
             }
         }
     }
 }
 
+function show_paypal()
+{
+    if (isset($_SESSION['total_quantity']) && $_SESSION['total_quantity'] > 0) {
+        $paypall = <<<DELIMETER
+        <script
+            src="https://www.paypal.com/sdk/js?client-id=AfX1HvnlHboY9Rdr-XKoxlxHZBcOqv_7XmoN2ysf3woaDc6rV9pUlDfjZkPXzhqCK8qvlQz2pbJGa2xz&currency=USD&disable-funding=credit,card">
+        </script>
+        DELIMETER;
+        return $paypall;
+    }
+}
 
+
+function report()
+{
+    $total = 0;
+    $qty = 0;
+
+    foreach ($_SESSION as $name => $value) {
+        if ($value > 0) {
+            if (substr($name, 0, 8) == "product_") {
+                $nameLenght = strlen($name) - 8;
+                $productId = substr($name, 8, $nameLenght);
+                $query = run_query("SELECT * FROM products WHERE product_id = " . escape_string($productId));
+                confirm_query($query);
+                while ($row = fetch_array($query)) {
+                    $subTotal = $row['product_price'] * $value;
+                    $qty += $value;
+                }
+                $total += $subTotal;
+                echo $qty;
+            }
+        }
+    }
+}
 ?>

@@ -2,13 +2,18 @@
 <html lang="en">
 <?php require_once("../resources/config.php"); ?>
 <?php
-if (isset($_GET['tx'])) {
+if (isset($_GET['amt'],  $_GET['cc'], $_GET['tx'], $_GET['st'])) {
     $amountn = $_GET['amt'];
     $currency = $_GET['cc'];
     $transaction = $_GET['tx'];
     $status = $_GET['st'];
+    $query = run_query("INSERT INTO orders (order_amount, order_transaction, order_status, order_currency)
+     VALUES ('{$amountn}','{$transaction}','{$status}','{$currency}')");
+    confirm_query($query);
+    report();
+    // session_destroy();
 } else {
-    // redirect("index.php");
+    redirect("index.php");
 }
 ?>
 

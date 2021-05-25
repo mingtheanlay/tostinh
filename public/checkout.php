@@ -49,10 +49,7 @@ require_once("../resources/config.php");
             </table>
         </div>
     </div>
-
-    <script
-        src="https://www.paypal.com/sdk/js?client-id=AfX1HvnlHboY9Rdr-XKoxlxHZBcOqv_7XmoN2ysf3woaDc6rV9pUlDfjZkPXzhqCK8qvlQz2pbJGa2xz&currency=USD&disable-funding=credit,card">
-    </script>
+    <?php echo show_paypal() ?>
     <script src="./js/paypal.js"></script>
 </div>
 <!-- Footer -->
