@@ -1,16 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php require_once("../resources/config.php"); ?>
-<?php
-if (isset($_GET['tx'])) {
-    $amountn = $_GET['amt'];
-    $currency = $_GET['cc'];
-    $transaction = $_GET['tx'];
-    $status = $_GET['st'];
-} else {
-    // redirect("index.php");
-}
-?>
 
 <head>
     <meta charset="UTF-8" />
@@ -22,25 +11,21 @@ if (isset($_GET['tx'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./css/thankyou.css">
-    <title>Thank You</title>
+    <title>Payment Cancel</title>
 </head>
 
 <body>
     <div class="jumbotron text-center  vertical-center">
         <div class="container">
-            <h1 class="display-1">Thank You!</h1>
-
-            <p class="lead">
-                <strong class="text-primary">You have successfully purchased</strong>
-            </p>
-            <hr />
-            <p class="text-success">You have charged <strong>
-                    <?php echo "&#36;" . ($_SESSION['price_total']) ?></strong>
-            </p>
-            <p class="lead">
+            <div><img src="./img/cancel.png" alt="" width="150px"></div>
+            <br>
+            <h1>Payment Cancel </h1>
+            <h1>For Some Reason</h1>
+            <br>
+            <div class="lead">
                 <a class="btn btn-primary btn-md" href="http://localhost:8888/tostinh/public/" role="button">Back to
                     homepage</a>
-            </p>
+            </div>
         </div>
     </div>
 </body>

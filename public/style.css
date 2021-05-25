@@ -12,3 +12,8 @@ body {
 label {
   font-weight: normal;
 }
+
+.pp-btn {
+  float: left;
+  width: 40px;
+}

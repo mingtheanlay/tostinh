@@ -70,7 +70,7 @@ function cart()
                     <input type="hidden" name="item_name_{$item_name}" value="{$row['product_title']}">
                     <input type="hidden" name="item_number_{$item_number}" value="{$row['product_id']}">
                     <input type="hidden" name="amount_{$amount}" value="{$row['product_price']}">
-                    <input type="hidden" name="quantity_{$item_qty}" value="{$row['product_quantity']}">
+                    <input type="hidden" name="quantity_{$item_qty}" value="{$value}">
                     DELIMETER;
 
                     echo $product;

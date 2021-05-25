@@ -23,7 +23,9 @@ require_once("../resources/config.php");
                     <?php cart(); ?>
                 </tbody>
             </table>
-            <div id="paypal-button"></div>
+            <span class="pp-btn">
+                <div id="paypal-payment-button"></div>
+            </span>
         </form>
         <!--  ***********CART TOTALS*************-->
         <div class="col-xs-4 pull-right ">
@@ -47,8 +49,11 @@ require_once("../resources/config.php");
             </table>
         </div>
     </div>
+
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AfX1HvnlHboY9Rdr-XKoxlxHZBcOqv_7XmoN2ysf3woaDc6rV9pUlDfjZkPXzhqCK8qvlQz2pbJGa2xz&currency=USD&disable-funding=credit,card">
+    </script>
+    <script src="./js/paypal.js"></script>
 </div>
 <!-- Footer -->
 <?php include(FRONTEND_TEMPLATE . DS . "footer.php") ?>
-<script src=" https://www.paypalobjects.com/api/checkout.js"></script>
-<script src="./js/paypal.js"></script>
