@@ -1,4 +1,11 @@
 <?php
+function last_id()
+{
+    global $conn;
+    return mysqli_insert_id($conn);
+}
+
+
 // General function (Helper)
 function run_query($sql)
 {

@@ -2,19 +2,7 @@
 <html lang="en">
 <?php require_once("../resources/config.php"); ?>
 <?php
-if (isset($_GET['amt'],  $_GET['cc'], $_GET['tx'], $_GET['st'])) {
-    $amountn = $_GET['amt'];
-    $currency = $_GET['cc'];
-    $transaction = $_GET['tx'];
-    $status = $_GET['st'];
-    $query = run_query("INSERT INTO orders (order_amount, order_transaction, order_status, order_currency)
-     VALUES ('{$amountn}','{$transaction}','{$status}','{$currency}')");
-    confirm_query($query);
-    report();
-    // session_destroy();
-} else {
-    redirect("index.php");
-}
+report();
 ?>
 
 <head>
@@ -40,14 +28,18 @@ if (isset($_GET['amt'],  $_GET['cc'], $_GET['tx'], $_GET['st'])) {
             </p>
             <hr />
             <p class="text-success">You have charged <strong>
-                    <?php echo "&#36;" . ($_SESSION['price_total']) ?></strong>
+                    <?php
+                    if (isset($_SESSION['price_total'])) {
+                        echo "&#36;" . ($_SESSION['price_total']);
+                    }
+                    ?></strong>
             </p>
             <p class="lead">
-                <a class="btn btn-primary btn-md" href="http://localhost:8888/tostinh/public/" role="button">Back to
-                    homepage</a>
+                <a class="btn btn-primary btn-md" role="button" onclick="backToHomepage()" href="">Back to homepage</a>
             </p>
         </div>
     </div>
 </body>
+<script src="./js/script.js"></script>
 
 </html>

@@ -43,7 +43,9 @@ paypal
       });
     },
     onCancel: function (data) {
-      window.location.href("http://localhost:8888/tostinh/public/cancel.php");
+      window.location.replace(
+        "http://localhost:8888/tostinh/public/cancel.php"
+      );
     },
   })
   .render("#paypal-payment-button");

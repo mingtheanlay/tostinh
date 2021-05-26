@@ -89,24 +89,48 @@ function show_paypal()
 
 function report()
 {
-    $total = 0;
-    $qty = 0;
+    if (isset($_GET['amt'],  $_GET['cc'], $_GET['tx'], $_GET['st'])) {
+        $amountn = $_GET['amt'];
+        $currency = $_GET['cc'];
+        $transaction = $_GET['tx'];
+        $status = $_GET['st'];
+        $total = 0;
+        $qty = 0;
 
-    foreach ($_SESSION as $name => $value) {
-        if ($value > 0) {
-            if (substr($name, 0, 8) == "product_") {
-                $nameLenght = strlen($name) - 8;
-                $productId = substr($name, 8, $nameLenght);
-                $query = run_query("SELECT * FROM products WHERE product_id = " . escape_string($productId));
-                confirm_query($query);
-                while ($row = fetch_array($query)) {
-                    $subTotal = $row['product_price'] * $value;
-                    $qty += $value;
+        if (isset($_SESSION['price_total'])) {
+            $order_query = run_query("INSERT INTO orders (order_amount, order_transaction, order_status, order_currency)
+             VALUES ('{$amountn}','{$transaction}','{$status}','{$currency}')");
+            $last_id = last_id();
+            confirm_query($order_query);
+        }
+
+        foreach ($_SESSION as $name => $value) {
+            if ($value > 0) {
+                if (substr($name, 0, 8) == "product_") {
+                    $nameLenght = strlen($name) - 8;
+                    $productId = substr($name, 8, $nameLenght);
+
+                    $query = run_query("SELECT * FROM products WHERE product_id = " . escape_string($productId));
+                    confirm_query($query);
+
+                    while ($row = fetch_array($query)) {
+                        $subTotal = $row['product_price'] * $value;
+                        $productPrice = $row['product_price'];
+                        $productTitle = $row['product_title'];
+                        $qty += $value;
+
+                        $query_report = run_query("INSERT INTO reports (product_id, order_id, product_title, product_price, product_quantity)
+                         VALUES ('{$productId}','{$last_id}','{$productTitle}','{$productPrice}','{$value}')");
+                        confirm_query($query_report);
+                    }
+                    $total += $subTotal;
                 }
-                $total += $subTotal;
-                echo $qty;
             }
         }
+
+        session_destroy();
+    } else {
+        redirect("index.php");
     }
 }
 ?>
