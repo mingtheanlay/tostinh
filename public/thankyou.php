@@ -2,7 +2,7 @@
 <html lang="en">
 <?php require_once("../resources/config.php"); ?>
 <?php
-report();
+process_transaction();
 ?>
 
 <head>

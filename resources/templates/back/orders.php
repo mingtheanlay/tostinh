@@ -3,30 +3,24 @@
         <h1 class="page-header">
             All Orders
         </h1>
+        <h4 class="text-success">
+            <?php show_message(); ?>
+        </h4>
     </div>
     <div class="row">
         <table class="table table-hover">
-            <thead>
+            <thead style="background-color: gray; color: white;">
                 <tr>
-                    <th>S.N</th>
-                    <th>Title</th>
-                    <th>Photo</th>
-                    <th>Quantity</th>
-                    <th>Invoice Number</th>
-                    <th>Order Date</th>
+                    <th>Order ID</th>
+                    <th>Total Price</th>
+                    <th>Transaction</th>
+                    <th>Currency</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>21</td>
-                    <td>Nikon 234</td>
-                    <td><img src="http://placehold.it/62x62" alt=""></td>
-                    <td>Cameras</td>
-                    <td>456464</td>
-                    <td>Jun 2039</td>
-                    <td>Completed</td>
-                </tr>
+                <?php display_orders() ?>
             </tbody>
         </table>
     </div>

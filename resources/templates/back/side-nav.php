@@ -10,7 +10,7 @@
             <a href="index.php?product"><i class="fa fa-fw fa-bar-chart-o"></i> View Products</a>
         </li>
         <li>
-            <a href="index.php?add"><i class="fa fa-fw fa-table"></i> Add Product</a>
+            <a href="index.php?add_product"><i class="fa fa-fw fa-table"></i> Add Product</a>
         </li>
 
         <li>

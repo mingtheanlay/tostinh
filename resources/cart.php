@@ -87,7 +87,7 @@ function show_paypal()
 }
 
 
-function report()
+function process_transaction()
 {
     if (isset($_GET['amt'],  $_GET['cc'], $_GET['tx'], $_GET['st'])) {
         $amountn = $_GET['amt'];

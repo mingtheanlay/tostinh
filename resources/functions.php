@@ -259,3 +259,26 @@ function get_total_quantity()
 }
 
 // For Back-End
+function display_orders()
+{
+    $query = run_query("SELECT * FROM orders");
+    confirm_query($query);
+
+    while ($row = fetch_array($query)) {
+        $order = <<<DELIMETER
+        <tr>
+            <td>{$row['order_id']}</td>
+            <td>{$row['order_amount']}</td>
+            <td>{$row['order_transaction']}</td>
+            <td>{$row['order_currency']}</td>
+            <td>{$row['order_status']}</td>
+            <td>
+                <a class="btn btn-danger" href="../../resources/templates/back/delete_order.php?id={$row['order_id']}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+            </td>
+        </tr>
+        DELIMETER;
+        echo $order;
+    }
+}
