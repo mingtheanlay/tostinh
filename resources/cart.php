@@ -48,11 +48,13 @@ function cart()
                     $subTotal = $row['product_price'] * $value;
                     $total += $subTotal;
                     $qty += $value;
+                    $img = display_image($row['product_image']);
                     $product = <<<DELIMETER
                     <tr>
                         <td>{$row['product_title']}</td>
                         <td>&#36;{$row['product_price']}</td>
                         <td>{$value}</td>
+                        <td><img src="../resources/{$img}" width="150"></td>
                         <td>&#36;{$subTotal}</td>
                         <td class="text-center">
                             <a class="btn btn-danger" href="../resources/cart.php?delete={$row['product_id']}"><span class="glyphicon glyphicon-remove"></span></a>

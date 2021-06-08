@@ -15,6 +15,7 @@ require_once("../resources/config.php");
                         <th>Product</th>
                         <th>Price</th>
                         <th>Quantity</th>
+                        <th>Preview</th>
                         <th>Sub-total</th>
                         <th class="text-center">Action</th>
                     </tr>

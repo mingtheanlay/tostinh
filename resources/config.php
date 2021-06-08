@@ -6,6 +6,7 @@ session_start();
 defined("DS") ? null : DEFINE("DS", DIRECTORY_SEPARATOR);
 defined("FRONTEND_TEMPLATE") ? null : DEFINE("FRONTEND_TEMPLATE", __DIR__ .  DS .  "templates/front");
 defined("BACKEND_TEMPLATE") ? null : DEFINE("BACKEND_TEMPLATE", __DIR__ . DS .  "templates/back");
+defined("UPLOAD_DIRECTORY") ? null : DEFINE("UPLOAD_DIRECTORY", __DIR__ . DS .  "uploads");
 // Define Database
 defined("DB_HOST") ? null : DEFINE("DB_HOST", "localhost");
 defined("DB_USER") ? null : DEFINE("DB_USER", "root");

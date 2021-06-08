@@ -2,12 +2,9 @@
 
     <div class="row">
         <h1 class="page-header">
-            Add Product
-
+            Edit Product
         </h1>
     </div>
-
-
 
     <form action="" method="post" enctype="multipart/form-data">
 
@@ -35,13 +32,6 @@
                     <input type="number" name="product_price" class="form-control" size="60">
                 </div>
             </div>
-
-
-
-
-
-
-
         </div>
         <!--Main Content-->
 

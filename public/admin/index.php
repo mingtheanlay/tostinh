@@ -32,6 +32,9 @@ if (!isset($_SESSION['username'], $_COOKIE['login'])) {
         if (isset($_GET['user'])) {
             include(BACKEND_TEMPLATE . "/users.php");
         }
+        if (isset($_GET['edit_product'])) {
+            include(BACKEND_TEMPLATE . "/edit_product.php");
+        }
         ?>
     </div>
 </div>

@@ -1,30 +1,22 @@
 <h1 class="page-header">
     All Products
-
 </h1>
+<h4 class="text-success">
+    <?php show_message(); ?>
+</h4>
 <table class="table table-hover">
-
-    <thead>
-
+    <thead style="background-color: gray; color: white; ">
         <tr>
-            <th>Id</th>
+            <th>ID</th>
             <th>Title</th>
+            <th>Preview</th>
             <th>Category</th>
             <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-
-        <tr>
-            <td>20</td>
-            <td>Nikon 234 <br>
-                <img src="http://placehold.it/62x62" alt="">
-            </td>
-            <td>Category</td>
-            <td>123</td>
-        </tr>
-
-
-
+        <?php get_product_admin() ?>
     </tbody>
 </table>
