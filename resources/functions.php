@@ -269,7 +269,6 @@ function display_orders()
 {
     $query = run_query("SELECT * FROM orders");
     confirm_query($query);
-
     while ($row = fetch_array($query)) {
         $order = <<<DELIMETER
         <tr>
@@ -287,10 +286,6 @@ function display_orders()
         DELIMETER;
         echo $order;
     }
-}
-
-function set_active()
-{
 }
 
 // Admin Product
@@ -313,7 +308,7 @@ function get_product_admin()
             <a class="btn btn-danger" href="../../resources/templates/back/delete_product.php?id={$row['product_id']}">
                 <span class="glyphicon glyphicon-remove"></span>
             </a>
-            <a class="btn btn-info" href="index.php?edit_product&{$row['product_id']}">
+            <a class="btn btn-info" href="index.php?edit_product&id={$row['product_id']}">
                 <span class="glyphicon glyphicon-edit"></span>
             </a>
             </td>
@@ -376,4 +371,82 @@ function display_image($picture)
 {
     global $upload_dir;
     return $upload_dir . DS . $picture;
+}
+
+function update_product()
+{
+    if (isset($_POST['update'])) {
+        $product_title = escape_string($_POST['product_title']);
+        $product_category_id = escape_string($_POST['product_category_id']);
+        $product_price = escape_string($_POST['product_price']);
+        $product_description = escape_string($_POST['product_description']);
+        $short_desc = escape_string($_POST['short_desc']);
+        $product_quantity = escape_string($_POST['product_quantity']);
+        $product_image = escape_string($_FILES['product_image']['name']);
+        $image_tmp_location = escape_string($_FILES['product_image']['tmp_name']);
+
+        if (empty($product_image)) {
+            $thumnail_dir = run_query("SELECT product_image FROM products WHERE product_id = " . escape_string($_GET["id"]));
+            confirm_query($thumnail_dir);
+            while ($row = fetch_array($thumnail_dir)) {
+                $product_image = $row['product_image'];
+            }
+        }
+
+        move_uploaded_file($image_tmp_location, UPLOAD_DIRECTORY . DS . $product_image);
+
+        $query = "UPDATE products SET ";
+        $query .= "product_title = '{$product_title}', ";
+        $query .= "product_category_id = '{$product_category_id}', ";
+        $query .= "product_price = '{$product_price}', ";
+        $query .= "product_description = '{$product_description}', ";
+        $query .= "product_short_description  = '{$short_desc}', ";
+        $query .= "product_quantity = '{$product_quantity}', ";
+        $query .= "product_image = '{$product_image}'";
+        $query .= " WHERE product_id = " . escape_string($_GET['id']);
+
+        $send_query = run_query($query);
+        confirm_query($send_query);
+        send_message("$product_title has been updated");
+        redirect("index.php?product");
+    }
+}
+
+function show_categories()
+{
+    $get_cat =  run_query("SELECT * FROM categories");
+    confirm_query($get_cat);
+    while ($row = fetch_array($get_cat)) {
+        $categories = <<<DELIMETER
+        <tr>
+            <td>{$row['cat_id']}</td>
+            <td>{$row['cat_title']}</td>
+            <td>
+                <a class="btn btn-danger" href="../../resources/templates/back/delete_category.php?id={$row['cat_id']}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+            </td>
+        </tr>
+        DELIMETER;
+        echo $categories;
+    }
+}
+
+function add_category()
+{
+    if (isset($_POST['add_category'])) {
+        $cat_title = escape_string($_POST['cat_title']);
+        if (empty($cat_title) || $cat_title == " ") {
+            $text = <<<DELIMETER
+            <h4 class="text-danger">
+                Category Title cannot be empty
+            </h4>
+            DELIMETER;
+            echo $text;
+        } else {
+            $add_cat = run_query("INSERT INTO categories (cat_title) VALUES ('{$cat_title}')");
+            confirm_query($add_cat);
+            send_message("$cat_title was added to categories table");
+        }
+    }
 }

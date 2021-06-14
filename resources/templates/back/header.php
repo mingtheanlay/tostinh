@@ -48,4 +48,3 @@
             ?>
             <!-- /.navbar-collapse -->
         </nav>
-        <?php set_active() ?>

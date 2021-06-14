@@ -34,7 +34,7 @@ add_product();
             <div class="form-group">
                 <label for="product_category_id">Product Category</label>
                 <select name="product_category_id" id="" class="form-control">
-                    <option value="" selected="true" disabled="disabled">Select Category</option>
+                    <option value="" selected="true" disabled="disabled" active>Select Category</option>
                     <?php fetch_categories() ?>
                 </select>
             </div>
