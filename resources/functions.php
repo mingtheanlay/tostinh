@@ -327,16 +327,34 @@ function add_product()
         $product_description = escape_string($_POST['product_description']);
         $short_desc = escape_string($_POST['short_desc']);
         $product_quantity = escape_string($_POST['product_quantity']);
-        $product_image = escape_string($_FILES['product_image']['name']);
+
+        // Getting file name
+        $filename = escape_string($_FILES['product_image']['name']);
+
+        // Valid extension
+        $valid_ext = array('png', 'jpeg', 'jpg');
+
+        // Location
+        $location = UPLOAD_DIRECTORY . DS . $filename;
         $image_tmp_location = escape_string($_FILES['product_image']['tmp_name']);
 
-        move_uploaded_file($image_tmp_location, UPLOAD_DIRECTORY . DS . $product_image);
+        // file extension
+        $file_extension = pathinfo($location, PATHINFO_EXTENSION);
+        $file_extension = strtolower($file_extension);
+
+        // Check extension
+        if (in_array($file_extension, $valid_ext)) {
+            // Compress Image
+            compressImage($image_tmp_location, $location, 60);
+        } else {
+            echo "Invalid file type.";
+        }
 
         $query = run_query("INSERT INTO products(product_title
         , product_category_id, product_price, product_quantity 
         , product_description, product_image, product_short_description) 
         VALUES ('{$product_title}', '{$product_category_id}', '{$product_price}'
-        , '{$product_quantity}', '{$product_description}', '{$product_image}', '{$short_desc}')");
+        , '{$product_quantity}', '{$product_description}', '{$filename}', '{$short_desc}')");
         $last_id = last_id();
         confirm_query($query);
         send_message("$product_title was added to database");
@@ -355,6 +373,22 @@ function fetch_categories()
         DELIMETER;
         echo $category;
     }
+}
+
+function compressImage($source, $destination, $quality)
+{
+    $info = getimagesize($source);
+
+    if ($info['mime'] == 'image/jpeg')
+        $image = imagecreatefromjpeg($source);
+
+    elseif ($info['mime'] == 'image/gif')
+        $image = imagecreatefromgif($source);
+
+    elseif ($info['mime'] == 'image/png')
+        $image = imagecreatefrompng($source);
+
+    imagejpeg($image, $destination, $quality);
 }
 
 function fetch_categories_for_product($cat_id)
@@ -382,18 +416,36 @@ function update_product()
         $product_description = escape_string($_POST['product_description']);
         $short_desc = escape_string($_POST['short_desc']);
         $product_quantity = escape_string($_POST['product_quantity']);
-        $product_image = escape_string($_FILES['product_image']['name']);
+
+        // Getting file name
+        $filename = escape_string($_FILES['product_image']['name']);
+
+        // Valid extension
+        $valid_ext = array('png', 'jpeg', 'jpg');
+
+        // Location
+        $location = UPLOAD_DIRECTORY . DS . $filename;
         $image_tmp_location = escape_string($_FILES['product_image']['tmp_name']);
 
-        if (empty($product_image)) {
+        // file extension
+        $file_extension = pathinfo($location, PATHINFO_EXTENSION);
+        $file_extension = strtolower($file_extension);
+
+        if (empty($filename)) {
             $thumnail_dir = run_query("SELECT product_image FROM products WHERE product_id = " . escape_string($_GET["id"]));
             confirm_query($thumnail_dir);
             while ($row = fetch_array($thumnail_dir)) {
-                $product_image = $row['product_image'];
+                $filename = $row['product_image'];
             }
         }
 
-        move_uploaded_file($image_tmp_location, UPLOAD_DIRECTORY . DS . $product_image);
+        // Check extension
+        if (in_array($file_extension, $valid_ext)) {
+            // Compress Image
+            compressImage($image_tmp_location, $location, 60);
+        } else {
+            echo "Invalid file type.";
+        }
 
         $query = "UPDATE products SET ";
         $query .= "product_title = '{$product_title}', ";
@@ -402,7 +454,7 @@ function update_product()
         $query .= "product_description = '{$product_description}', ";
         $query .= "product_short_description  = '{$short_desc}', ";
         $query .= "product_quantity = '{$product_quantity}', ";
-        $query .= "product_image = '{$product_image}'";
+        $query .= "product_image = '{$filename}'";
         $query .= " WHERE product_id = " . escape_string($_GET['id']);
 
         $send_query = run_query($query);
@@ -448,5 +500,41 @@ function add_category()
             confirm_query($add_cat);
             send_message("$cat_title was added to categories table");
         }
+    }
+}
+
+function show_user()
+{
+    $get_user =  run_query("SELECT * FROM users");
+    confirm_query($get_user);
+    while ($row = fetch_array($get_user)) {
+        $users = <<<DELIMETER
+        <tr>
+            <td>{$row['user_id']}</td>
+            <td>{$row['username']}</td>
+            <td>{$row['email']}</td>
+            <td>
+            <a class="btn btn-danger"
+                href="../../resources/templates/back/delete_user.php?id={$row['user_id']}">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+            </td>
+        </tr>
+        DELIMETER;
+        echo $users;
+    }
+}
+
+function add_user()
+{
+    if (isset($_POST['add_user'])) {
+        $username = escape_string($_POST['username']);
+        $email = escape_string($_POST['email']);
+        $password = escape_string($_POST['password']);
+        $query = run_query("INSERT INTO users(username, email, password) 
+        VALUES ('{$password}', '{$email}', '{$password}')");
+        confirm_query($query);
+        send_message("$username was added");
+        redirect("index.php?user");
     }
 }

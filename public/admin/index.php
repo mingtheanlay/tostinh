@@ -35,6 +35,9 @@ if (!isset($_SESSION['username'], $_COOKIE['login'])) {
         if (isset($_GET['edit_product'])) {
             include(BACKEND_TEMPLATE . "/edit_product.php");
         }
+        if (isset($_GET['add_user'])) {
+            include(BACKEND_TEMPLATE . "/add_user.php");
+        }
         ?>
     </div>
 </div>

@@ -50,9 +50,9 @@ if (isset($_GET['id'])) {
             <div class="form-group">
                 <label for="product_category_id">Product Category</label>
                 <select name="product_category_id" id="" class="form-control">
-                    <option value="" selected="true" disabled>
+                    <option value="" disabled>
                         Select Category</option>
-                    <option value="<?php echo $product_category_id ?>?" selected="true" active disabled>
+                    <option value="<?php echo $product_category_id ?>" hidden>
                         <?php echo fetch_categories_for_product($product_category_id) ?></option>
                     <?php fetch_categories() ?>
                 </select>

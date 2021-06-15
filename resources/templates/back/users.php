@@ -1,60 +1,23 @@
 <div class="col-lg-12">
-
-
     <h1 class="page-header">
         Users
-
+        <a href="index.php?add_user" class="btn btn-primary" style="float: right;">Add User</a>
     </h1>
-    <p class="bg-success">
-        <?php echo $message; ?>
-    </p>
-
-    <a href="add_user.php" class="btn btn-primary">Add User</a>
-
-
+    <h4 class="text-success">
+        <?php show_message(); ?>
+    </h4>
     <div class="col-md-12">
-
         <table class="table table-hover">
-            <thead>
+            <thead style="background-color: gray; color: white; ">
                 <tr>
-                    <th>Id</th>
-                    <th>Photo</th>
+                    <th>ID</th>
                     <th>Username</th>
-                    <th>First Name</th>
-                    <th>Last Name </th>
+                    <th>Email</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-
-                <?php foreach ($users as $user) : ?>
-
-                <tr>
-
-                    <td>2</td>
-                    <td><img class="admin-user-thumbnail user_image" src="placehold.it/62x62" alt="">
-                    </td>
-
-                    <td>Rico
-                        <div class="action_links">
-
-                            <a href="">Delete</a>
-                            <a href="">Edit</a>
-
-
-                        </div>
-                    </td>
-
-
-                    <td>Edwin</td>
-                    <td>Diaz</td>
-                </tr>
-
-
-                <?php endforeach; ?>
-
-
-
-
+                <?php show_user() ?>
             </tbody>
         </table>
         <!--End of Table-->
