@@ -9,14 +9,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="./">
-                <span class="glyphicon glyphicon-shopping-cart"></span>
-                &nbsp;&nbsp;&nbsp;Tos Tinh
-            </a>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.php">
+                    <img src="./img/bg-logo.png" width="30" height="30" alt="" style="display: inline-block;">
+                    Tos Tinh
+                </a>
+            </div>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li class="nav-item">
+                    <a href="index.php" class="nav-link">Home</a>
+                </li>
                 <li class="nav-item">
                     <a href="shop.php" class="nav-link">Shop</a>
                 </li>
@@ -27,7 +32,7 @@
             </ul>
             <ul class="nav navbar-nav pull-right">
                 <li class="nav-item pull-right">
-                    <a href="admin" class="nav-link">Admin</a>
+                    <a href="admin" class="nav-link">Administrator Page</a>
                 </li>
             </ul>
         </div>

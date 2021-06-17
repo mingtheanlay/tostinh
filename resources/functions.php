@@ -156,6 +156,7 @@ function show_individuel_product($id)
     DELIMETER;
     echo $block;
 }
+
 // Get product in category page
 function get_product_in_cat_page($id)
 {
@@ -346,19 +347,19 @@ function add_product()
         if (in_array($file_extension, $valid_ext)) {
             // Compress Image
             compressImage($image_tmp_location, $location, 60);
+
+            $query = run_query("INSERT INTO products(product_title
+            , product_category_id, product_price, product_quantity 
+            , product_description, product_image, product_short_description) 
+            VALUES ('{$product_title}', '{$product_category_id}', '{$product_price}'
+            , '{$product_quantity}', '{$product_description}', '{$filename}', '{$short_desc}')");
+            $last_id = last_id();
+            confirm_query($query);
+            send_message("$product_title was added to database");
+            redirect("index.php?product");
         } else {
             echo "Invalid file type.";
         }
-
-        $query = run_query("INSERT INTO products(product_title
-        , product_category_id, product_price, product_quantity 
-        , product_description, product_image, product_short_description) 
-        VALUES ('{$product_title}', '{$product_category_id}', '{$product_price}'
-        , '{$product_quantity}', '{$product_description}', '{$filename}', '{$short_desc}')");
-        $last_id = last_id();
-        confirm_query($query);
-        send_message("$product_title was added to database");
-        redirect("index.php?product");
     }
 }
 
@@ -443,24 +444,30 @@ function update_product()
         if (in_array($file_extension, $valid_ext)) {
             // Compress Image
             compressImage($image_tmp_location, $location, 60);
+
+            $del = run_query("SELECT * FROM products WHERE product_id = " . escape_string($_GET['id']));
+            confirm_query($del);
+            while ($row = fetch_array($del)) {
+                unlink(UPLOAD_DIRECTORY . DS . $row['product_image']);
+            }
+
+            $query = "UPDATE products SET ";
+            $query .= "product_title = '{$product_title}', ";
+            $query .= "product_category_id = '{$product_category_id}', ";
+            $query .= "product_price = '{$product_price}', ";
+            $query .= "product_description = '{$product_description}', ";
+            $query .= "product_short_description  = '{$short_desc}', ";
+            $query .= "product_quantity = '{$product_quantity}', ";
+            $query .= "product_image = '{$filename}'";
+            $query .= " WHERE product_id = " . escape_string($_GET['id']);
+
+            $send_query = run_query($query);
+            confirm_query($send_query);
+            send_message("$product_title has been updated");
+            redirect("index.php?product");
         } else {
             echo "Invalid file type.";
         }
-
-        $query = "UPDATE products SET ";
-        $query .= "product_title = '{$product_title}', ";
-        $query .= "product_category_id = '{$product_category_id}', ";
-        $query .= "product_price = '{$product_price}', ";
-        $query .= "product_description = '{$product_description}', ";
-        $query .= "product_short_description  = '{$short_desc}', ";
-        $query .= "product_quantity = '{$product_quantity}', ";
-        $query .= "product_image = '{$filename}'";
-        $query .= " WHERE product_id = " . escape_string($_GET['id']);
-
-        $send_query = run_query($query);
-        confirm_query($send_query);
-        send_message("$product_title has been updated");
-        redirect("index.php?product");
     }
 }
 
@@ -536,5 +543,123 @@ function add_user()
         confirm_query($query);
         send_message("$username was added");
         redirect("index.php?user");
+    }
+}
+
+function report()
+{
+    $get_report =  run_query("SELECT * FROM reports");
+    confirm_query($get_report);
+    while ($row = fetch_array($get_report)) {
+        $categories = <<<DELIMETER
+        <tr>
+            <td>{$row['report_id']}</td>
+            <td>{$row['product_id']}</td>
+            <td>{$row['order_id']}</td>
+            <td>{$row['product_title']}</td>
+            <td>{$row['product_price']}</td>
+            <td>{$row['product_quantity']}</td>
+            <td>         
+            <a class="btn btn-danger" href="../../resources/templates/back/delete_report.php?id={$row['report_id']}">
+            <span class="glyphicon glyphicon-remove"></span>
+        </a></td>
+        </tr>
+        DELIMETER;
+        echo $categories;
+    }
+}
+
+function get_slide()
+{
+    $query = run_query("SELECT * FROM slides");
+    confirm_query($query);
+    while ($row = fetch_array($query)) {
+        $slide = <<<DELIMETER
+        <div class="item">
+            <img class="slide-image" src="../resources/uploads/{$row['slide_image']}" alt="{$row['slide_title']}">
+        </div>
+        DELIMETER;
+        echo $slide;
+    }
+}
+
+function active_slide()
+{
+    $query = run_query("SELECT * FROM slides ORDER BY slide_id DESC LIMIT 1");
+    confirm_query($query);
+    while ($row = fetch_array($query)) {
+        $slide_active = <<<DELIMETER
+        <div class="item active">
+            <img class="slide-image" src="../resources/uploads/{$row['slide_image']}" alt="{$row['slide_title']}">
+        </div>
+        DELIMETER;
+        echo $slide_active;
+    }
+}
+
+function current_active_slide_admin()
+{
+    $query = run_query("SELECT * FROM slides ORDER BY slide_id DESC LIMIT 1 ");
+    confirm_query($query);
+    while ($row = fetch_array($query)) {
+        $current_active_slide_admin = <<<DELIMETER
+            <img class="img-responsive" src="../../resources/uploads/{$row['slide_image']}" alt="{$row['slide_title']}">
+        DELIMETER;
+        echo $current_active_slide_admin;
+    }
+}
+
+function add_slide()
+{
+    if (isset($_POST['add_banner'])) {
+        $slide_title = escape_string($_POST["banner_title"]);
+
+        // Getting file name
+        $slide_image = escape_string($_FILES['thumnail']['name']);
+
+        // Valid extension
+        $valid_ext = array('png', 'jpeg', 'jpg');
+
+        // Location
+        $location = UPLOAD_DIRECTORY . DS . $slide_image;
+        $image_tmp_location = escape_string($_FILES['thumnail']['tmp_name']);
+
+        // file extension
+        $file_extension = pathinfo($location, PATHINFO_EXTENSION);
+        $file_extension = strtolower($file_extension);
+
+        // Check extension
+        if (in_array($file_extension, $valid_ext) && !empty($slide_title) &&  !empty($slide_image)) {
+            // Compress Image
+            compressImage($image_tmp_location, $location, 60);
+            $query = run_query("INSERT INTO slides (slide_title, slide_image) VALUES ('{$slide_title}', '{$slide_image}')");
+            confirm_query($query);
+            send_message("Slide was added");
+            redirect("index.php?slides");
+        } else {
+            echo "<p class='text-danger'>Missing fields</p>";
+        }
+    }
+}
+
+function get_slide_thumnail()
+{
+    $query = run_query("SELECT * FROM slides ORDER BY slide_id ASC");
+    confirm_query($query);
+    while ($row = fetch_array($query)) {
+        $img = display_image($row['slide_image']);
+        $get_slide_thumnail = <<<DELIMETER
+        <tr>
+            <td>{$row['slide_id']}</td>
+            <td>{$row['slide_title']}</td>
+            <td><img src="../../resources/{$img}" width='100' width='50'></td>
+            <td> 
+            <a class="btn btn-danger" href="../../resources/templates/back/delete_slide.php?id={$row['slide_id']}">
+            <span class="glyphicon glyphicon-remove"></span>
+            </td>
+        </a></td>
+        </tr>
+        DELIMETER;
+        echo $get_slide_thumnail;
     }
 }

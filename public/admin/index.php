@@ -38,6 +38,15 @@ if (!isset($_SESSION['username'], $_COOKIE['login'])) {
         if (isset($_GET['add_user'])) {
             include(BACKEND_TEMPLATE . "/add_user.php");
         }
+        if (isset($_GET['report'])) {
+            include(BACKEND_TEMPLATE . "/report.php");
+        }
+        if (isset($_GET['slides'])) {
+            include(BACKEND_TEMPLATE . "/slides.php");
+        }
+        if (isset($_GET['delete_slide'])) {
+            include(BACKEND_TEMPLATE . "/delete_slide.php");
+        }
         ?>
     </div>
 </div>

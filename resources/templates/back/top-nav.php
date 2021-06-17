@@ -5,7 +5,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="/tostinh/public/admin/">Tos Tinh Administrator</a>
+    <a class="navbar-brand" href="/tostinh/public/admin/">
+        <img src="img/bg-logo.png" width="30" height="30" alt="" style="display: inline-block;">
+        Tos Tinh Administrator</a>
 </div>
 <!-- Top Menu Items -->
 <ul class="nav navbar-right top-nav">
