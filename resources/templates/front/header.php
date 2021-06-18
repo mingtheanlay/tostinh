@@ -14,6 +14,7 @@
     <!-- Custom CSS -->
     <link href="css/shop-homepage.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="img/sm-logo.png" />
 </head>
 

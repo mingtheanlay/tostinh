@@ -109,7 +109,7 @@ function process_transaction()
         foreach ($_SESSION as $name => $value) {
             if ($value > 0) {
                 if (substr($name, 0, 8) == "product_") {
-                    $nameLenght = strlen($name) - 8;
+                    $nameLenght = strlen($name);
                     $productId = substr($name, 8, $nameLenght);
 
                     $query = run_query("SELECT * FROM products WHERE product_id = " . escape_string($productId));

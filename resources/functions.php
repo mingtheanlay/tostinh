@@ -67,14 +67,92 @@ function get_products()
 {
     $query = run_query("SELECT * from products");
     confirm_query($query);
-    while ($row = fetch_array($query)) {
+
+    $rows = mysqli_num_rows($query);
+
+    if (isset($_GET["page"])) {
+        $page = preg_replace('#[^0-9]#', '', $_GET["page"]);
+    } else {
+        $page = 1;
+    }
+
+    $per_page = 6;
+    $last_page = ceil($rows / $per_page);
+
+    if ($page < 1) {
+        $page = 1;
+    } else if ($page > $last_page) {
+        $page = $last_page;
+    }
+
+    $middle_number = '';
+    $sub1 = $page - 1;
+    $sub2 = $page - 2;
+    $add1 = $page + 1;
+    $add2 = $page + 2;
+
+    if ($page == 1) {
+        $middle_number .= '<li class="page-item active"><a>' . $page . '</a></li>';
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $add1 . '">' . $add1 . '</a></li>';
+    } else if ($page == $last_page) {
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $sub1 . '">' . $sub1 . '</a></li>';
+        $middle_number .= '<li class="page-item active"><a>' . $page . '</a></li>';
+    } else if ($page > 2 && $page < ($last_page - 1)) {
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $sub2 . '">' . $sub2 . '</a></li>';
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $sub1 . '">' . $sub1 . '</a></li>';
+        $middle_number .= '<li class="page-item active"><a>' . $page . '</a></li>';
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $add1 . '">' . $add1 . '</a></li>';
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $add2 . '">' . $add2 . '</a></li>';
+    } else if ($page > 1 && $page < $last_page) {
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $sub1 . '">' . $sub1 . '</a></li>';
+        $middle_number .= '<li class="page-item active"><a>' . $page . '</a></li>';
+        $middle_number .= '<li class="page-item">
+            <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $add1 . '">' . $add1 . '</a></li>';
+    }
+
+    $limit = 'LIMIT ' . ($page - 1) * $per_page . ',' . $per_page;
+
+    $query2 = run_query("SELECT * from products " . $limit);
+    confirm_query($query2);
+
+    $output_pagination = "";
+    if ($page != 1) {
+        $prev = $page - 1;
+        $output_pagination .= '<li class="page-item">
+        <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $prev . '">' . "Back" . '</a></li>';
+    }
+    $output_pagination .= $middle_number;
+    if ($page != $last_page) {
+        $next = $page + 1;
+        $output_pagination .= '<li class="page-item">
+        <a class="page-link" href="' . $_SERVER['PHP_SELF'] .
+            '?page=' . $next . '">' . "Next" . '</a></li>';
+    }
+
+    while ($row = fetch_array($query2)) {
         $img = display_image($row['product_image']);
         $product = <<<DELIMETER
         <div class="col-sm-4 col-lg-4 col-md-4">
         <div class="thumbnail">
             <a target="_blank"
                 href="item.php?id={$row['product_id']}">
-                <img src="../resources/{$img}"  alt="">
+                <img src="../resources/{$img}"  alt="" style="height: 150px;">
             </a>
             <div class="caption"> 
                 <h4 class="pull-right">&#36;{$row['product_price']}</h4>
@@ -89,6 +167,10 @@ function get_products()
         DELIMETER;
         echo $product;
     }
+    echo "
+    <div style='clear: both' class='text-center'>
+        <ul class='pagination'>{$output_pagination}</ul>
+    </div>";
 }
 // Get categories
 function get_categories()

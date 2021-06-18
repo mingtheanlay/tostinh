@@ -15,7 +15,7 @@ if (!isset($_SESSION['username'], $_COOKIE['login'])) {
     <div class="container-fluid">
         <?php
         if ($_SERVER['REQUEST_URI'] == "/tostinh/public/admin/" || $_SERVER['REQUEST_URI'] == "/tostinh/public/admin/index.php") {
-            include(BACKEND_TEMPLATE . "/dashboard.php");
+            include(BACKEND_TEMPLATE . "/report.php");
         }
         if (isset($_GET['orders'])) {
             include(BACKEND_TEMPLATE . "/orders.php");
