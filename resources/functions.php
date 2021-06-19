@@ -185,6 +185,21 @@ function get_categories()
         echo $category;
     }
 }
+
+function get_categories_title()
+{
+    if (isset($_GET["id"])) {
+        $query = "SELECT * FROM categories WHERE cat_id = " . escape_string($_GET["id"]);
+        $send_query = run_query($query);
+        confirm_query($send_query);
+        while ($row = fetch_array($send_query)) {
+            $category_title = <<<DELIMETER
+            <h1>{$row['cat_title']}</h1>
+            DELIMETER;
+        }
+        echo $category_title;
+    }
+}
 // Show Product
 function show_individuel_product($id)
 {
@@ -253,7 +268,7 @@ function get_product_in_cat_page($id)
         <div class="thumbnail">
             <a target="_blank"
                 href="item.php?id={$row['product_id']}">
-                <img src="../resources/{$img}"  alt="">
+                <img src="../resources/{$img}" style="height: 150px;"  alt="">
             </a>
             <div class="caption"> 
                 <h4 class="pull-right">&#36;{$row['product_price']}</h4>
@@ -273,7 +288,7 @@ function get_product_in_cat_page($id)
 // Get product in shop page
 function get_product_in_shop_page()
 {
-    $query = run_query(" SELECT * FROM products ");
+    $query = run_query(" SELECT * FROM products");
     confirm_query($query);
     while ($row = fetch_array($query)) {
         $img = display_image($row['product_image']);
@@ -284,7 +299,7 @@ function get_product_in_shop_page()
         <div class="thumbnail">
             <a target="_blank"
                 href="item.php?id={$row['product_id']}">
-                <img src="../resources/{$img}"  alt="">
+                <img src="../resources/{$img}"  alt="" style="height: 150px;">
             </a>
             <div class="caption"> 
                 <h4 class="pull-right">&#36;{$row['product_price']}</h4>
@@ -520,36 +535,36 @@ function update_product()
             while ($row = fetch_array($thumnail_dir)) {
                 $filename = $row['product_image'];
             }
-        }
-
-        // Check extension
-        if (in_array($file_extension, $valid_ext)) {
-            // Compress Image
-            compressImage($image_tmp_location, $location, 60);
-
-            $del = run_query("SELECT * FROM products WHERE product_id = " . escape_string($_GET['id']));
-            confirm_query($del);
-            while ($row = fetch_array($del)) {
-                unlink(UPLOAD_DIRECTORY . DS . $row['product_image']);
-            }
-
-            $query = "UPDATE products SET ";
-            $query .= "product_title = '{$product_title}', ";
-            $query .= "product_category_id = '{$product_category_id}', ";
-            $query .= "product_price = '{$product_price}', ";
-            $query .= "product_description = '{$product_description}', ";
-            $query .= "product_short_description  = '{$short_desc}', ";
-            $query .= "product_quantity = '{$product_quantity}', ";
-            $query .= "product_image = '{$filename}'";
-            $query .= " WHERE product_id = " . escape_string($_GET['id']);
-
-            $send_query = run_query($query);
-            confirm_query($send_query);
-            send_message("$product_title has been updated");
-            redirect("index.php?product");
         } else {
-            echo "Invalid file type.";
+            // Check extension
+            if (in_array($file_extension, $valid_ext)) {
+                // Compress Image
+                compressImage($image_tmp_location, $location, 60);
+
+                $del = run_query("SELECT * FROM products WHERE product_id = " . escape_string($_GET['id']));
+                confirm_query($del);
+                while ($row = fetch_array($del)) {
+                    unlink(UPLOAD_DIRECTORY . DS . $row['product_image']);
+                }
+            } else {
+                echo "Invalid file type.";
+            }
         }
+
+        $query = "UPDATE products SET ";
+        $query .= "product_title = '{$product_title}', ";
+        $query .= "product_category_id = '{$product_category_id}', ";
+        $query .= "product_price = '{$product_price}', ";
+        $query .= "product_description = '{$product_description}', ";
+        $query .= "product_short_description  = '{$short_desc}', ";
+        $query .= "product_quantity = '{$product_quantity}', ";
+        $query .= "product_image = '{$filename}'";
+        $query .= " WHERE product_id = " . escape_string($_GET['id']);
+
+        $send_query = run_query($query);
+        confirm_query($send_query);
+        send_message("$product_title has been updated");
+        redirect("index.php?product");
     }
 }
 
@@ -621,7 +636,7 @@ function add_user()
         $email = escape_string($_POST['email']);
         $password = escape_string($_POST['password']);
         $query = run_query("INSERT INTO users(username, email, password) 
-        VALUES ('{$password}', '{$email}', '{$password}')");
+        VALUES ('{$username}', '{$email}', '{$password}')");
         confirm_query($query);
         send_message("$username was added");
         redirect("index.php?user");
